@@ -12,6 +12,9 @@ app.use("/", express.static(path.join(__dirname, "build")));
 app.get("/heartbeat", function (req, res) {
   res.send("<3");
 });
+app.get("/login", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "login.html"));
+});
 
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
