@@ -1,8 +1,17 @@
 const express = require("express");
 const favicon = require("express-favicon");
+const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
