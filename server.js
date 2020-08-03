@@ -6,6 +6,8 @@ const path = require("path");
 const app = express();
 const mongo = require("mongodb").MongoClient;
 
+//import auth and figure out env
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
