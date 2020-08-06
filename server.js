@@ -32,7 +32,6 @@ mongo.connect(
       app.use(bodyParser.urlencoded({ extended: true }));
 
       app.use(favicon(__dirname + "/build/favicon.ico"));
-      app.use("/", express.static(path.join(__dirname, "build")));
       app.get("/heartbeat", function (req, res) {
         res.send("<3");
       });
