@@ -1,103 +1,45 @@
-const ObjectId = require("mongodb").ObjectId;
-//Example connection: MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {});
+const passport = require("passport");
+const bcrypt = require("bcrypt");
+const LocalStrategy = require("passport-local").Strategy;
+const ObjectID = require("mongodb").ObjectID;
 
-module.exports = function (app, db) {
-  app
-    .route("/api/drylandWorkouts")
+module.exports = (app, db) => {
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-    .get(function (req, res) {
-      db.collection("drylandWorkouts")
-        .find({})
-        .toArray((err, workouts) => {
-          if (err) return res.json(`could not find entries: ${err}`);
-          const workoutsArray = workouts.map((entry) => {
-            let workout = {
-              _id: entry._id,
-              title: entry.workout_name,
-              commentcount: entry.num_of_comments,
-            };
-            return workout;
-          });
-          res.json(workoutsArray);
-        });
-    })
+  passport.serializeUser(function (user, done) {
+    done(null, user._id);
+  });
 
-    .post(function (req, res) {
-      if (!req.body.title) return res.json("please submit a title");
-      const workout = {
-        workout_title: req.body.title,
-        num_of_comments: 0,
-        comments: [],
-      };
-      db.collection("drylandWorkouts").insertOne(workout, (err, doc) => {
-        if (err) res.json(`could not update: ${err}`);
-        const entry = { _id: doc.insertedId, title: workout.workout_title };
-        res.json(entry);
+  passport.deserializeUser(function (id, done) {
+    db.collection("climber-profiles").findOne(
+      { _id: new ObjectID(id) },
+      (err, doc) => {
+        done(null, doc);
+      }
+    );
+  });
+
+  passport.use(
+    new LocalStrategy((username, password, done) => {
+      db.collection("climber-profiles").findOne({ username }, (err, user) => {
+        if (err) {
+          console.log("User " + username + " attempted to log in (error).");
+          return done(err);
+        }
+        if (!user) {
+          console.log("Unknown user " + username + " attempted to log in.");
+          return done(null, false);
+        }
+        if (!bcrypt.compareSync(password, user.password)) {
+          console.log(
+            "User " + username + " attempted to log in (invalid password)."
+          );
+          return done(null, false);
+        }
+        console.log("User " + username + " logged in.");
+        return done(null, user);
       });
     })
-
-    .delete(function (req, res) {
-      db.collection("drylandWorkouts").deleteMany({}, (err, data) => {
-        if (err) res.json(`could not delete: ${err}`);
-        res.json("complete delete successful");
-      });
-    });
-
-  app
-    .route("/api/drylandWorkouts/:id")
-    .get(function (req, res) {
-      const workoutId = req.params.id;
-      db.collection("drylandWorkouts")
-        .find({ _id: new ObjectId(workoutId) })
-        .toArray((err, data) => {
-          if (err) res.json(`could not find ${workoutId} ${err}`);
-          if (data[0]) {
-            const workout = {
-              _id: data[0]._id,
-              title: data[0].workout_title,
-              comments: data[0].comments,
-            };
-            res.json(workout);
-          } else {
-            console.log(workoutId);
-            res.json(`no workout exists`);
-          }
-        });
-    })
-
-    .post(function (req, res) {
-      const workoutId = req.params.id;
-      const comment = req.body.comment;
-      db.collection("drylandWorkout").findAndModify(
-        { _id: new ObjectId(workoutId) },
-        {},
-        { $inc: { num_of_comments: 1 }, $push: { comments: comment } },
-        { new: true, upsert: false },
-        (err, data) => {
-          if (err) res.json(`could not update ${workoutId} ${err}`);
-          const workout = {
-            _id: data.value._id,
-            title: data.value.workout_title,
-            comments: data.value.comments,
-          };
-          res.json(workout);
-        }
-      );
-    })
-
-    .delete(function (req, res) {
-      const workoutId = req.params.id;
-      db.collection("drylandWorkout").findOneAndDelete(
-        { _id: new ObjectId(workoutId) },
-        (err, doc) => {
-          if (err) {
-            res.send(`could not delete ${workoutId} ${err}`);
-          } else {
-            doc.value
-              ? res.json(`delete successful`)
-              : res.json(`no workout exists`);
-          }
-        }
-      );
-    });
+  );
 };

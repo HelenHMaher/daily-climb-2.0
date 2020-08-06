@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 const mongo = require("mongodb").MongoClient;
+const auth = require("./src/routes/auth.js");
+const login = require("./src/routes/login.js");
 
 //import auth and figure out env
 
@@ -38,9 +40,8 @@ mongo.connect(
         res.sendFile(path.join(__dirname, "build", "login.html"));
       });
 
-      app.get("/", function (req, res) {
-        res.sendFile(path.join(__dirname, "build", "index.html"));
-      });
+      auth(app, db);
+      login(app, db);
 
       app.listen(process.env.PORT || 3000, () =>
         console.log("Server is running...")
