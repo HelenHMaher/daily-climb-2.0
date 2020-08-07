@@ -33,7 +33,7 @@ mongo.connect(
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use(flash());
 
-      app.use(favicon(__dirname + "/build/favicon.ico"));
+      app.use(favicon(__dirname + "/build/favicon.png"));
       app.get("/heartbeat", function (req, res) {
         res.send("<3");
       });
