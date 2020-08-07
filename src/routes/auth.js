@@ -29,13 +29,13 @@ module.exports = (app, db) => {
         }
         if (!user) {
           console.log("Unknown user " + username + " attempted to log in.");
-          return done(null, false);
+          return done(null, false, { message: "Invalid username." });
         }
         if (!bcrypt.compareSync(password, user.password)) {
           console.log(
             "User " + username + " attempted to log in (invalid password)."
           );
-          return done(null, false);
+          return done(null, false, { message: "Invalid password." });
         }
         console.log("User " + username + " logged in.");
         return done(null, user);

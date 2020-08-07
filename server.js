@@ -6,7 +6,7 @@ const path = require("path");
 const app = express();
 const mongo = require("mongodb").MongoClient;
 const auth = require("./src/routes/auth.js");
-const login = require("./src/routes/login.js");
+const login = require("./login.js");
 
 //import auth and figure out env
 
@@ -20,7 +20,7 @@ app.use(
 
 mongo.connect(
   process.env.MONGO_URI,
-  { useNewURLParser: true, useUnifiedTopology: true },
+  { useUnifiedTopology: true },
   (err, client) => {
     let db = client.db("my-daily-climb");
     if (err) {
