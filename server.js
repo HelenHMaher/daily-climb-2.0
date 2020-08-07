@@ -7,6 +7,7 @@ const app = express();
 const mongo = require("mongodb").MongoClient;
 const auth = require("./src/routes/auth.js");
 const login = require("./login.js");
+const flash = require("connect-flash");
 
 //import auth and figure out env
 
@@ -30,13 +31,16 @@ mongo.connect(
 
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
+      app.use(flash());
 
       app.use(favicon(__dirname + "/build/favicon.ico"));
       app.get("/heartbeat", function (req, res) {
         res.send("<3");
       });
       app.get("/login", function (req, res) {
-        res.sendFile(path.join(__dirname, "build", "login.html"));
+        res.sendFile(path.join(__dirname, "build", "login.html"), {
+          message: req.flash("error"),
+        });
       });
 
       auth(app, db);
