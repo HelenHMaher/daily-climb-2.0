@@ -9,8 +9,6 @@ module.exports = (app, db) => {
   function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
       console.log("logged in");
-      const username = req.body.username;
-      next(username);
     } else {
       console.log("not logged in");
       res.redirect("/login");
@@ -68,7 +66,7 @@ module.exports = (app, db) => {
       );
     },
     passport.authenticate("local", {
-      successRedirect: "/profile",
+      successRedirect: `/profile`,
       failureRedirect: "/login",
     })
   );
