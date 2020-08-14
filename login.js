@@ -9,7 +9,8 @@ module.exports = (app, db) => {
   function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
       console.log("logged in");
-      next();
+      const username = req.body.username;
+      next(username);
     } else {
       console.log("not logged in");
       res.redirect("/login");
@@ -77,6 +78,8 @@ module.exports = (app, db) => {
   app.get("/profile", function (req, res, next) {
     res.sendFile(path.join(__dirname, "build", "index.html"));
   });
+
+  app.get("/user");
 
   app.use((req, res, next) => {
     res.status(404).type("text").send("Not Found");
