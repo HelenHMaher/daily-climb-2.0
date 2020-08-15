@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { GlobalStyles } from "./global";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme";
-
 import { AddClimb, AddDrylandWorkout, Home, MyProfile } from "./components";
 
 function App() {
+  //set up redux toolkit!!
+  /*const [profileName, setProfileName] = useState("");
+  function getProfileName(name) {
+    setProfileName(name);*/
+  }
   return (
     <ThemeProvider theme={theme}>
       <>
         <GlobalStyles />
         <Router>
           <h1>My Daily Climb</h1>
+          <h3>{profileName}</h3>
           <nav>
             <ul>
               <li>
