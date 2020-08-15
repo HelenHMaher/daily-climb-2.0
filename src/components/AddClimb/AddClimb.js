@@ -1,8 +1,9 @@
 import React from "react";
+import { StyledAddClimb } from "./AddClimb.styled";
 
 function AddClimb() {
   return (
-    <div>
+    <StyledAddClimb>
       <h2>Current Session</h2>
       {/*Display Basic Session Info*/}
 
@@ -42,7 +43,7 @@ function AddClimb() {
           Submit Changes
         </button>
       </form>
-    </div>
+    </StyledAddClimb>
   );
 }
 

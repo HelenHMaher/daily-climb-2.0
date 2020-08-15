@@ -4,11 +4,7 @@ import { GlobalStyles } from "./global";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme";
 
-import Home from "./components/Home";
-import ClimbingSession from "./components/ClimbingSession";
-import LogWorkout from "./components/LogWorkout";
-import DrylandWorkouts from "./components/DrylandWorkouts";
-import MyProfile from "./components/MyProfile";
+import { AddClimb, AddDrylandWorkout, Home, MyProfile } from "./components";
 
 function App() {
   return (
@@ -23,13 +19,10 @@ function App() {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/climbing-session">Log a Climbing Session</Link>
+                <Link to="/add-climb">Climb</Link>
               </li>
               <li>
-                <Link to="/log-workout">Log a Workout</Link>
-              </li>
-              <li>
-                <Link to="/dryland-workouts">Dryland Training</Link>
+                <Link to="/add-dryland-workout">Dryland</Link>
               </li>
               <li>
                 <Link to="/my-profile">My Profile</Link>
@@ -37,16 +30,11 @@ function App() {
             </ul>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route exact path="/add-climb" component={AddClimb} />
               <Route
                 exact
-                path="/climbing-session"
-                component={ClimbingSession}
-              />
-              <Route exact path="/log-workout" component={LogWorkout} />
-              <Route
-                exact
-                path="/dryland-workouts"
-                component={DrylandWorkouts}
+                path="/add-dryland-workout"
+                component={AddDrylandWorkout}
               />
               <Route exact path="/my-profile" component={MyProfile} />
             </Switch>
