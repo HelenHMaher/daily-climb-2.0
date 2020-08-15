@@ -10,14 +10,13 @@ function App() {
   /*const [profileName, setProfileName] = useState("");
   function getProfileName(name) {
     setProfileName(name);*/
-  }
   return (
     <ThemeProvider theme={theme}>
       <>
         <GlobalStyles />
         <Router>
           <h1>My Daily Climb</h1>
-          <h3>{profileName}</h3>
+          <h3>NAME</h3>
           <nav>
             <ul>
               <li>
