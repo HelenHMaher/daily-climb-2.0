@@ -1,7 +1,8 @@
-import { configureStore, getDefaultMiddleward } from "@reduxjs/toolkit";
-import { mainReducer } from "./reducers";
+import { configureStore } from "@reduxjs/toolkit";
+import { usernameReducer } from "./reducers";
 
 export const store = configureStore({
-  reducer: mainReducer,
-  middleware: getDefaultMiddleward(),
+  reducer: usernameReducer,
 });
+
+console.log(store.getState());
