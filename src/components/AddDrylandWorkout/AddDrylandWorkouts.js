@@ -1,7 +1,10 @@
 import React from "react";
+import { StyledAddDrylandWorkouts } from "./AddDrylandWorkouts.styled";
 
 function AddDrylandWorkouts() {
-  return <div>AddDrylandWorkouts</div>;
+  return (
+    <StyledAddDrylandWorkouts>AddDrylandWorkouts</StyledAddDrylandWorkouts>
+  );
 }
 
 export default AddDrylandWorkouts;
